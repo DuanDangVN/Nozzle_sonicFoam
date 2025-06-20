@@ -1,0 +1,16 @@
+####
+1. File CreateMesh.py used to create blockMeshDict.txt
+2. Copy content inside blockMeshDict.txt into system/blockMeshDict
+####
+foamListTimes -rm  # to clean leftover times
+
+
+blockMesh
+
+checkMesh > logMesh 2>&1 &
+
+decomposePar
+
+mpirun -np 6 sonicFoam -parallel 2>&1 | tee >(tail -n 1000 > log) > /dev/null
+
+reconstructPar
